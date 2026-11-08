@@ -1,0 +1,7 @@
+[project]
+name = "z80-tm"
+version = "0.1.0"
+description = "A Z80 CPU implemented by a deterministic single-tape Turing machine"
+requires-python = ">=3.11"
+dependencies = []
+

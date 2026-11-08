@@ -1,0 +1,47 @@
+test_bad_opcode_exit (tests.test_cli.CLITests.test_bad_opcode_exit) ... ok
+ 
+test_budget_exit_and_instruction_stepping (tests.test_cli.CLITests.test_budget_exit_and_instruction_stepping) ... ok
+test_raw_binary_load_address_and_peek (tests.test_cli.CLITests.test_raw_binary_load_address_and_peek) ... ok
+test_add_hl_flags_and_alias (tests.test_extended.ExtendedTests.test_add_hl_flags_and_alias) ... ok
+test_all_conditions_taken_and_not_taken (tests.test_extended.ExtendedTests.test_all_conditions_taken_and_not_taken) 
+... ok
+test_all_unprefixed_opcodes_declared (tests.test_extended.ExtendedTests.test_all_unprefixed_opcodes_declared) ... ok
+test_alu_explicit_edges (tests.test_extended.ExtendedTests.test_alu_explicit_edges) ... ok
+test_ei_delay_and_di (tests.test_extended.ExtendedTests.test_ei_delay_and_di) ... ok
+test_exchange_main_alternate_and_stack (tests.test_extended.ExtendedTests.test_exchange_main_alternate_and_stack) ... 
+ok
+test_inc_dec_memory_and_pair_flags (tests.test_extended.ExtendedTests.test_inc_dec_memory_and_pair_flags) ... ok
+test_load_word_wrap_and_little_endian (tests.test_extended.ExtendedTests.test_load_word_wrap_and_little_endian) ... ok
+test_port_script_errors_are_transition_errors 
+(tests.test_extended.ExtendedTests.test_port_script_errors_are_transition_errors) ... ok
+test_resume_after_transition_budget (tests.test_extended.ExtendedTests.test_resume_after_transition_budget) ... ok
+test_scripted_ports_full_address_and_flags 
+(tests.test_extended.ExtendedTests.test_scripted_ports_full_address_and_flags) ... ok
+test_stack_call_return_wrap (tests.test_extended.ExtendedTests.test_stack_call_return_wrap) ... ok
+test_every_unprefixed_opcode_has_independent_vectors 
+(tests.test_fixtures.IndependentFixtures.test_every_unprefixed_opcode_has_independent_vectors) ... ok
+test_pinned_jsmoo_vectors (tests.test_fixtures.IndependentFixtures.test_pinned_jsmoo_vectors) ... ok
+test_identity_rule_expansion_and_zero_budget 
+(tests.test_machine.MachineTests.test_identity_rule_expansion_and_zero_budget) ... ok
+test_literal_single_cell_transitions_and_blank_left 
+(tests.test_machine.MachineTests.test_literal_single_cell_transitions_and_blank_left) ... ok
+test_table_is_immutable_and_validated (tests.test_machine.MachineTests.test_table_is_immutable_and_validated) ... ok
+test_diagonal (tests.test_milestone.MilestoneTests.test_diagonal) ... ok
+test_djnz (tests.test_milestone.MilestoneTests.test_djnz) ... ok
+test_fetch_wraparound (tests.test_milestone.MilestoneTests.test_fetch_wraparound) ... ok
+test_inc_h_flags (tests.test_milestone.MilestoneTests.test_inc_h_flags) ... ok
+test_machine_cycle_trace (tests.test_milestone.MilestoneTests.test_machine_cycle_trace) ... ok
+test_raw_machine_without_harness (tests.test_milestone.MilestoneTests.test_raw_machine_without_harness) ... ok
+test_refresh_low_seven_bits (tests.test_milestone.MilestoneTests.test_refresh_low_seven_bits) ... ok
+test_rrca_flags (tests.test_milestone.MilestoneTests.test_rrca_flags) ... ok
+test_same_table_relocated_across_page (tests.test_milestone.MilestoneTests.test_same_table_relocated_across_page) ... 
+ok
+test_self_modifying_opcode (tests.test_milestone.MilestoneTests.test_self_modifying_opcode) ... ok
+test_unsupported_halt_and_budget_are_distinct 
+(tests.test_milestone.MilestoneTests.test_unsupported_halt_and_budget_are_distinct) ... ok
+test_write_first_and_last_bytes (tests.test_milestone.MilestoneTests.test_write_first_and_last_bytes) ... ok
+
+----------------------------------------------------------------------
+Ran 32 tests in 116.331s
+
+OK
