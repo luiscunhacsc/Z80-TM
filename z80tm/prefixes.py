@@ -192,7 +192,10 @@ class Prefixes:
         ed = c.fetch("OP", ED(c, self.u).build(), opcode=True)
         prefix_states = {0xCB: cb_select, 0xED: c.write("INDEX", 0, ed)}
         for op, index in ((0xDD, 1), (0xFD, 2)):
-            prefix_states[op] = c.write("INDEX", index, c.fetch("OP", self.decode, opcode=True))
+            # Even an ignored DD/FD breaks the previous flag-writing history:
+            # SCF/CCF must see Q=0 after the prefix (including repeated prefixes).
+            prefix_states[op] = c.write("Q", 0, c.write("OLDQ", 0,
+                               c.write("INDEX", index, c.fetch("OP", self.decode, opcode=True))))
         base = {op: self.wrap(entry, 0, modifies_flags(op)) for op, entry in self.base.items()}
         for mapping in (base, ix, iy):
             mapping.update(prefix_states)

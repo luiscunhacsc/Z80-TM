@@ -1,67 +1,84 @@
 # Coverage and continuation plan
 
-Target: **Zilog NMOS Z80**, documented behavior first. This is an incrementally
-verified CPU implementation, not a Spectrum emulator or a complete NMOS core.
+Target: **Zilog NMOS Z80**. This is a CPU implemented by generated single-tape
+Turing-machine rules, with selected independent verification. It is not a
+Spectrum emulator or a claim of exhaustive hardware conformance.
 
 | Family | Implemented | Verification |
 | --- | --- | --- |
-| Milestone 1: 21,06,3E,77,24,0F,10,76 | All eight | Three requested programs; edge, page and address-wrap vectors; 32 JSMoo fixtures |
-| Unprefixed loads | All register, immediate, indirect, absolute and 16-bit forms | Independent fixtures for every opcode; little-endian/wraparound tests |
-| Unprefixed ALU | ADD/ADC/SUB/SBC/AND/XOR/OR/CP, INC/DEC, ADD HL,rr, pair INC/DEC, DAA/CPL/SCF/CCF, accumulator rotates | Independent fixtures for every opcode; explicit carry, half-carry, signed overflow and alias tests |
-| Exchanges/stack | EX AF,AF'; EXX; EX DE,HL; EX (SP),HL; PUSH/POP | Main/alternate state, stack wrap, CALL/RET round trip |
-| Control flow | JP/JR/DJNZ/CALL/RET/RST and conditional forms | Independent fixtures; all eight conditions taken and untaken; signed displacement tests |
-| I/O | IN A,(n), OUT (n),A | Tape-script direction/address/data checking; full 16-bit ports and independent fixtures |
-| CPU control | NOP, HALT retirement, DI/EI latch writes, EI-delay boundary state, R increment on M1 | Explicit state/retirement tests; interrupt acceptance not implemented |
-| CB | None | Planned next; SLL remains separately undocumented |
-| ED | None | Planned: documented instructions, block/repeat operations and mode controls |
-| DD/FD, DDCB/FDCB | None | Planned: indexed displacements, prefix interactions, repeated/ignored prefixes |
-| Interrupts | None | Planned: tape-scripted NMI/INT, modes 0–2, EI inhibition, RETI/RETN, HALT recovery |
-| Board/peripherals | None | Deliberately outside the CPU phase |
+| Unprefixed | All 252 non-prefix bytes: loads, ALU, exchanges, stack, control flow, I/O and CPU control | 520 independent vectors; explicit arithmetic, branch, stack, wraparound and self-modification tests |
+| CB | All 256 bytes: rotates/shifts, BIT, RES, SET, including SLL | One independent vector per byte, including memory forms and full flags |
+| ED | Documented arithmetic, transfers, I/R, I/O, block/repeat operations, mode controls and returns; aliases; undefined bytes act as two-byte NOPs | 80 independent opcode vectors; undefined-ED CLI regression; interrupt/RETI tests |
+| DD/FD | IX/IY substitutions, index high/low bytes, signed displacements, ignored/repeated prefixes | 252 independent vectors per prefix; prefixed EI-delay and IM0 prefix-stream tests |
+| DDCB/FDCB | All 256 final bytes per family, including register copies and BIT aliases | 512 independent vectors |
+| Interrupts | Tape scripts, NMI, level-sensitive INT, IM0 response streams, IM1/IM2, EI inhibition, RETI/RETN, HALT recovery | Explicit scenarios for priority, stack/vector wrap, deferred acceptance, refresh, response exhaustion and budget resumption |
+| Clock | 64-bit tape clock and per-action elapsed time, advanced by generated rules | Per-fixture timing checks; carry across 32 bits; absolute script deadlines; interrupted-run equivalence |
+| Board/peripherals | Scripted ports only | Spectrum contention, video, sound and other peripherals are outside this phase |
 
-`python -m z80tm coverage` lists the exact 252 supported bytes. CB, DD, ED and
-FD currently fail clearly at the prefix address; they are not treated as NOPs.
-The table already stores IX/IY, I, IFF1/2, IM and alternate registers on tape.
-Storage alone does not imply the associated instruction families work.
+`python -m z80tm coverage` lists unprefixed entries and family counts.
+`--family CB` (or ED/DD/FD/DDCB/FDCB) lists a single family; `--json` emits
+machine-readable maps. DD/FD maps contain 252 terminal entries; the four
+prefix bytes additionally dispatch through the shared prefix decoder. ED has
+256 decoder entries, including undefined NOPs. Entry counts describe decoding,
+not the strength of verification or the number of distinct instructions.
 
-## Timing contract
+## Timing and interrupt contract
 
-Instruction retirement includes the completed HALT instruction, with PC at its
-following byte. The harness stops at that boundary. Repeated halted M1/refresh
-cycles and asynchronous recovery are not implemented. The guest HALT latch is
-separate from a runner stop and from transition-budget exhaustion.
+HALT retires with PC at the following byte. The harness stops there by default.
+`CPU.run(stop_on_halt=False, max_actions=...)`, or CLI `--continue-halt --actions`,
+continues with 4T halted M1 cycles and accepts eligible interrupts. HALT cycles
+increment R and the tape clock without retiring another instruction. IM0
+responses do count as instructions; NMI and IM1/IM2 entries do not. A repeated
+block instruction retires one iteration per instruction step.
 
-Every implemented instruction writes its base timing on tape. Branch paths
-choose their timing through rules. Trace events represent 4T M1, 3T memory,
-4T I/O and internal intervals. Tests compare non-internal cycle addresses,
-data and start offsets against the simplified-bus JSMoo fixtures. They do not
-claim pin-level accuracy or internal-address/refresh contention accuracy.
+The tape holds both CLOCK and per-action TIME as unsigned 64-bit counters.
+Generated cycle rules advance them; host counters only report completed work.
+A transition budget can expire inside any action and execution can resume from
+that exact tape, head and state, including partially completed clock updates.
+Counter overflow is modulo 2^64; script timestamps do not encode a rollover era.
 
-The host's retired-instruction and accumulated-T-state counters are reporting
-only. Before adding scheduled interrupts or WAIT, introduce a multi-byte clock
-and pending-event state on the tape and update them through transition rules.
+Interrupt records are ordered `[absolute_time, kind, vector]`, where kind is
+`int`, `clear`, or `nmi`. Rules consume all due records at the next action
+boundary. INT stays asserted until a clear record. NMI uses a pending latch,
+so multiple edges before service can coalesce. The IM0 vector supplies its
+first opcode; subsequent bytes come from the separate tape response stream.
+RETI produces an observable completion time, without a peripheral daisy chain.
+
+Bus traces include M1, memory/I/O transactions, internal intervals, interrupt
+acknowledgements and HALT cycles. Their start times come from the tape clock.
+Refresh addresses are reported for M1/acknowledgement events. Independent
+fixtures compare non-internal transaction addresses, data and start offsets,
+and total timing. Internal address accuracy, refresh pin phases, precise
+interrupt sampling edges, WAIT/BUSRQ and contention are not verified here.
+The interrupt scenarios are explicit regression expectations, not an independent
+interrupt oracle.
 
 ## Undocumented behavior ledger
 
 | Behavior | Current policy / evidence |
 | --- | --- |
-| F bits 3/5 for implemented arithmetic, INC/DEC and accumulator rotates | Result-derived bits; CP uses operand bits. Explicit edge vectors and sampled full-F JSMoo comparisons pass. |
-| SCF/CCF bits 3/5 | Currently taken from A. NMOS Q-dependent behavior is **not implemented**; fixture comparison masks these two bits only for opcodes 37/3F. No full-byte NMOS claim for these instructions. |
-| WZ/MEMPTR, Q, P | Not modeled; excluded from fixture comparisons. Needed for later undocumented and interrupt-sensitive behavior. |
-| DAA invalid/atypical input combinations | Finite table implements the usual NMOS correction algorithm. Two independent arbitrary-state fixtures are sampled; exhaustive hardware verification is not claimed. |
-| Undocumented opcodes, SLL, index-high/index-low instructions, ED aliases | Not implemented or claimed. |
-| Prefix effects, R under prefixes, NMOS LD A,I/R interrupt quirk | Not implemented or claimed. |
+| F bits 3/5 | Full-byte comparisons for all selected vectors, including CP operand bits and BIT memory behavior |
+| SCF/CCF Q dependence | Q is initialized from the fixture and updated by rules; DD/FD clear prior flag history; full F is compared without a mask |
+| WZ/MEMPTR, Q, P | Tape-resident state; all three are initialized and compared in the independent fixture suite |
+| DAA atypical inputs | Finite correction table; selected arbitrary-state fixtures, without exhaustive hardware verification |
+| SLL, index high/low, indexed CB copies, ED aliases | Implemented; selected independent vectors |
+| Repeated block flags | Implemented and compared in selected ED fixtures; broader multi-iteration coverage remains useful |
+| LD A,I/R P/V interrupt behavior | Implemented; a dedicated LD A,I interrupt scenario and selected transfer fixtures |
+
+The ignored-DD/FD SCF/CCF rule follows the hardware findings recorded in
+[David Banks's undocumented-flags notes](https://github.com/hoglet67/Z80Decoder/wiki/Undocumented-Flags#scfccf).
+The pinned `FD 37 0000` vector exposed the missing reset. Dedicated regressions
+also cover both carry instructions, DD/FD mixtures, refresh wrap and a preceding
+ALU instruction.
 
 ## Next implementation sequence
 
-1. Add documented CB rotate/shift/BIT/RES/SET instructions using the same shared
-   tape addressing and ALU machinery. Test R increments, (HL) writeback,
-   preserved carry, flags and cycle placement; keep SLL outside documented coverage.
-2. Add ED documented arithmetic, transfers, I/R, I/O and block repeats. Define
-   WZ/Q/P policy before asserting undocumented behavior.
-3. Add DD/FD/DDCB/FDCB and repeated/ignored prefix handling. Test displacement
-   wrap and fetch classification independently of architectural results.
-4. Add rule-driven clock and interrupt scripts, NMI, IM 0/1/2, EI inhibition,
-   RETI/RETN and HALT recovery. IRQ acknowledgement must run on tape.
-5. Expand selected vectors/exercisers and implement precise machine-cycle bus
-   detail before integrating Spectrum contention. No such exercisers or Linux
-   execution have been run in this workspace yet.
+1. Expand vector sampling and add multi-instruction exercisers, including
+   repeated/ignored-prefix combinations and block-operation termination paths.
+2. Validate interrupt timing and undocumented edge behavior against an
+   independent oracle; retain explicit differences and exclusions.
+3. Refine internal bus addresses and refresh/WAIT/BUSRQ pin behavior before
+   adding Spectrum contention or other board components.
+4. Run the same strict runner on Linux and record reproducible measurements.
+
+No redcode core, zexdoc/zexall, hardware oracle or Linux run is recorded yet.

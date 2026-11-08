@@ -1,109 +1,109 @@
-0000: 21  A=00 F=00 BC=0000 HL=4000 PC=0003  T=10
+0000: 21  instruction A=00 F=00 BC=0000 HL=4000 PC=0003  T=10
        0 m1       0000 +4T
        4 read     0001 +3T
        7 read     0002 +3T
-0003: 06  A=00 F=00 BC=0800 HL=4000 PC=0005  T=7
+0003: 06  instruction A=00 F=00 BC=0800 HL=4000 PC=0005  T=7
       10 m1       0003 +4T
       14 read     0004 +3T
-0005: 3E  A=80 F=00 BC=0800 HL=4000 PC=0007  T=7
+0005: 3E  instruction A=80 F=00 BC=0800 HL=4000 PC=0007  T=7
       17 m1       0005 +4T
       21 read     0006 +3T
-0007: 77  A=80 F=00 BC=0800 HL=4000 PC=0008  T=7
+0007: 77  instruction A=80 F=00 BC=0800 HL=4000 PC=0008  T=7
       24 m1       0007 +4T
       28 write    4000 +3T
-0008: 24  A=80 F=00 BC=0800 HL=4100 PC=0009  T=4
+0008: 24  instruction A=80 F=00 BC=0800 HL=4100 PC=0009  T=4
       31 m1       0008 +4T
-0009: 0F  A=40 F=00 BC=0800 HL=4100 PC=000A  T=4
+0009: 0F  instruction A=40 F=00 BC=0800 HL=4100 PC=000A  T=4
       35 m1       0009 +4T
-000A: 10  A=40 F=00 BC=0700 HL=4100 PC=0007  T=13
+000A: 10  instruction A=40 F=00 BC=0700 HL=4100 PC=0007  T=13
       39 m1       000A +4T
-      43 internal ---- +1T
+      43 internal 0007 +1T
       44 read     000B +3T
-      47 internal ---- +5T
-0007: 77  A=40 F=00 BC=0700 HL=4100 PC=0008  T=7
+      47 internal 000B +5T
+0007: 77  instruction A=40 F=00 BC=0700 HL=4100 PC=0008  T=7
       52 m1       0007 +4T
       56 write    4100 +3T
-0008: 24  A=40 F=00 BC=0700 HL=4200 PC=0009  T=4
+0008: 24  instruction A=40 F=00 BC=0700 HL=4200 PC=0009  T=4
       59 m1       0008 +4T
-0009: 0F  A=20 F=20 BC=0700 HL=4200 PC=000A  T=4
+0009: 0F  instruction A=20 F=20 BC=0700 HL=4200 PC=000A  T=4
       63 m1       0009 +4T
-000A: 10  A=20 F=20 BC=0600 HL=4200 PC=0007  T=13
+000A: 10  instruction A=20 F=20 BC=0600 HL=4200 PC=0007  T=13
       67 m1       000A +4T
-      71 internal ---- +1T
+      71 internal 000B +1T
       72 read     000B +3T
-      75 internal ---- +5T
-0007: 77  A=20 F=20 BC=0600 HL=4200 PC=0008  T=7
+      75 internal 000B +5T
+0007: 77  instruction A=20 F=20 BC=0600 HL=4200 PC=0008  T=7
       80 m1       0007 +4T
       84 write    4200 +3T
-0008: 24  A=20 F=00 BC=0600 HL=4300 PC=0009  T=4
+0008: 24  instruction A=20 F=00 BC=0600 HL=4300 PC=0009  T=4
       87 m1       0008 +4T
-0009: 0F  A=10 F=00 BC=0600 HL=4300 PC=000A  T=4
+0009: 0F  instruction A=10 F=00 BC=0600 HL=4300 PC=000A  T=4
       91 m1       0009 +4T
-000A: 10  A=10 F=00 BC=0500 HL=4300 PC=0007  T=13
+000A: 10  instruction A=10 F=00 BC=0500 HL=4300 PC=0007  T=13
       95 m1       000A +4T
-      99 internal ---- +1T
+      99 internal 000F +1T
      100 read     000B +3T
-     103 internal ---- +5T
-0007: 77  A=10 F=00 BC=0500 HL=4300 PC=0008  T=7
+     103 internal 000B +5T
+0007: 77  instruction A=10 F=00 BC=0500 HL=4300 PC=0008  T=7
      108 m1       0007 +4T
      112 write    4300 +3T
-0008: 24  A=10 F=00 BC=0500 HL=4400 PC=0009  T=4
+0008: 24  instruction A=10 F=00 BC=0500 HL=4400 PC=0009  T=4
      115 m1       0008 +4T
-0009: 0F  A=08 F=08 BC=0500 HL=4400 PC=000A  T=4
+0009: 0F  instruction A=08 F=08 BC=0500 HL=4400 PC=000A  T=4
      119 m1       0009 +4T
-000A: 10  A=08 F=08 BC=0400 HL=4400 PC=0007  T=13
+000A: 10  instruction A=08 F=08 BC=0400 HL=4400 PC=0007  T=13
      123 m1       000A +4T
-     127 internal ---- +1T
+     127 internal 0013 +1T
      128 read     000B +3T
-     131 internal ---- +5T
-0007: 77  A=08 F=08 BC=0400 HL=4400 PC=0008  T=7
+     131 internal 000B +5T
+0007: 77  instruction A=08 F=08 BC=0400 HL=4400 PC=0008  T=7
      136 m1       0007 +4T
      140 write    4400 +3T
-0008: 24  A=08 F=00 BC=0400 HL=4500 PC=0009  T=4
+0008: 24  instruction A=08 F=00 BC=0400 HL=4500 PC=0009  T=4
      143 m1       0008 +4T
-0009: 0F  A=04 F=00 BC=0400 HL=4500 PC=000A  T=4
+0009: 0F  instruction A=04 F=00 BC=0400 HL=4500 PC=000A  T=4
      147 m1       0009 +4T
-000A: 10  A=04 F=00 BC=0300 HL=4500 PC=0007  T=13
+000A: 10  instruction A=04 F=00 BC=0300 HL=4500 PC=0007  T=13
      151 m1       000A +4T
-     155 internal ---- +1T
+     155 internal 0017 +1T
      156 read     000B +3T
-     159 internal ---- +5T
-0007: 77  A=04 F=00 BC=0300 HL=4500 PC=0008  T=7
+     159 internal 000B +5T
+0007: 77  instruction A=04 F=00 BC=0300 HL=4500 PC=0008  T=7
      164 m1       0007 +4T
      168 write    4500 +3T
-0008: 24  A=04 F=00 BC=0300 HL=4600 PC=0009  T=4
+0008: 24  instruction A=04 F=00 BC=0300 HL=4600 PC=0009  T=4
      171 m1       0008 +4T
-0009: 0F  A=02 F=00 BC=0300 HL=4600 PC=000A  T=4
+0009: 0F  instruction A=02 F=00 BC=0300 HL=4600 PC=000A  T=4
      175 m1       0009 +4T
-000A: 10  A=02 F=00 BC=0200 HL=4600 PC=0007  T=13
+000A: 10  instruction A=02 F=00 BC=0200 HL=4600 PC=0007  T=13
      179 m1       000A +4T
-     183 internal ---- +1T
+     183 internal 001B +1T
      184 read     000B +3T
-     187 internal ---- +5T
-0007: 77  A=02 F=00 BC=0200 HL=4600 PC=0008  T=7
+     187 internal 000B +5T
+0007: 77  instruction A=02 F=00 BC=0200 HL=4600 PC=0008  T=7
      192 m1       0007 +4T
      196 write    4600 +3T
-0008: 24  A=02 F=00 BC=0200 HL=4700 PC=0009  T=4
+0008: 24  instruction A=02 F=00 BC=0200 HL=4700 PC=0009  T=4
      199 m1       0008 +4T
-0009: 0F  A=01 F=00 BC=0200 HL=4700 PC=000A  T=4
+0009: 0F  instruction A=01 F=00 BC=0200 HL=4700 PC=000A  T=4
      203 m1       0009 +4T
-000A: 10  A=01 F=00 BC=0100 HL=4700 PC=0007  T=13
+000A: 10  instruction A=01 F=00 BC=0100 HL=4700 PC=0007  T=13
      207 m1       000A +4T
-     211 internal ---- +1T
+     211 internal 001F +1T
      212 read     000B +3T
-     215 internal ---- +5T
-0007: 77  A=01 F=00 BC=0100 HL=4700 PC=0008  T=7
+     215 internal 000B +5T
+0007: 77  instruction A=01 F=00 BC=0100 HL=4700 PC=0008  T=7
      220 m1       0007 +4T
      224 write    4700 +3T
-0008: 24  A=01 F=08 BC=0100 HL=4800 PC=0009  T=4
+0008: 24  instruction A=01 F=08 BC=0100 HL=4800 PC=0009  T=4
      227 m1       0008 +4T
-0009: 0F  A=80 F=01 BC=0100 HL=4800 PC=000A  T=4
+0009: 0F  instruction A=80 F=01 BC=0100 HL=4800 PC=000A  T=4
      231 m1       0009 +4T
-000A: 10  A=80 F=01 BC=0000 HL=4800 PC=000C  T=8
+000A: 10  instruction A=80 F=01 BC=0000 HL=4800 PC=000C  T=8
      235 m1       000A +4T
-     239 internal ---- +1T
+     239 internal 0023 +1T
      240 read     000B +3T
-000C: 76  A=80 F=01 BC=0000 HL=4800 PC=000D  T=4
+000C: 76  instruction A=80 F=01 BC=0000 HL=4800 PC=000D  T=4
      243 m1       000C +4T
 Stop: halt
 A=80 F=01 B=00 HL=4800 PC=000D
@@ -117,6 +117,7 @@ RAM: 4000=80 4100=40 4200=20 4300=10 4400=08 4500=04 4600=02 4700=01
 ......#.
 .......#
 36 guest instructions; 247 base T-states
-985,127 TM transitions; 983,722 head moves
-Host execution: 0.631929s; table build: 5.355118s
+0 interrupt entries; 0 HALT cycles; tape clock 247
+2,099,921 TM transitions; 2,092,890 head moves
+Host execution: 3.217481s; table build: 0.000002s
 CPython 3.12.10; Windows-11-10.0.26300-SP0; Intel64 Family 6 Model 142 Stepping 10, GenuineIntel

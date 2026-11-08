@@ -2,6 +2,7 @@ import unittest
 
 from z80tm.compiler import build_cpu
 from z80tm.harness import CPU, InterruptScriptError
+from z80tm.machine import TransitionBudget
 
 
 class InterruptTests(unittest.TestCase):
@@ -34,7 +35,8 @@ class InterruptTests(unittest.TestCase):
         self.assertEqual(cpu.registers["R"], 4)
 
     def test_im2_odd_vector_wraps_and_push_precedes_vector_read(self):
-        cpu = self.cpu(registers={"PC": 0x1234, "SP": 0x9000, "IFF1": 1, "IFF2": 1, "IM": 2, "I": 0xFF, "IRQ": 1, "VECTOR": 0xFF},
+        # Leave address zero available for the wrapped vector high byte.
+        cpu = self.cpu("", registers={"PC": 0x1234, "SP": 0x9000, "IFF1": 1, "IFF2": 1, "IM": 2, "I": 0xFF, "IRQ": 1, "VECTOR": 0xFF},
                        ram={65535: 0x78, 0: 0x56})
         irq = cpu.step_instruction(trace_cycles=True)
         self.assertEqual((irq.tstates, cpu.registers["PC"], cpu.registers["WZ"]), (19, 0x5678, 0x5678))
@@ -105,3 +107,26 @@ class InterruptTests(unittest.TestCase):
         self.assertEqual(cpu.registers["CLOCK"], 0x100000000)
         self.assertEqual(cpu.step_instruction().kind, "int")
         self.assertEqual(cpu.registers["CLOCK"], 0x10000000D)
+
+    def test_interrupt_and_halt_resume_after_transition_budget(self):
+        kwargs = dict(registers={"IFF1": 1, "IM": 1, "SP": 0x1000}, interrupts=[(8, "int", 255)])
+        baseline = self.cpu("76", **kwargs)
+        expected = []
+        baseline.run(stop_on_halt=False, max_actions=3, trace=expected.append, trace_cycles=True)
+        cpu = self.cpu("76", **kwargs)
+        actual = []
+        while len(actual) < 3:
+            try:
+                actual.append(cpu.step_instruction(budget=997, trace_cycles=True, allow_halt=True))
+            except TransitionBudget:
+                pass
+        self.assertEqual(cpu.machine.tape, baseline.machine.tape)
+        self.assertEqual(cpu.machine.transitions, baseline.machine.transitions)
+        self.assertEqual([ins.cycles for ins in actual], [ins.cycles for ins in expected])
+        self.assertEqual((cpu.instructions, cpu.halt_cycles, cpu.interrupts, cpu.tstates), (1, 1, 1, 21))
+
+    def test_negative_action_limit_rejected(self):
+        cpu = self.cpu()
+        with self.assertRaises(ValueError):
+            cpu.run(max_actions=-1)
+        self.assertEqual(cpu.machine.transitions, 0)

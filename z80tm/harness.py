@@ -151,7 +151,8 @@ class CPU:
 
     def run(self, budget=20_000_000, max_instructions=None, trace=None, trace_cycles=False,
             stop_on_halt=True, max_actions=None):
-        if budget < 0 or (max_instructions is not None and max_instructions < 0):
+        if (budget < 0 or (max_instructions is not None and max_instructions < 0)
+                or (max_actions is not None and max_actions < 0)):
             raise ValueError("Budgets must be nonnegative")
         end = self.machine.transitions + budget
         count = 0

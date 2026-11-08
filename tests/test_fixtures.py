@@ -1,14 +1,13 @@
-"""Independent JSMoo fixture comparisons; no conventional core in execution."""
+"""Offline independent JSMoo vectors, including undocumented state and flags."""
 import json
 from pathlib import Path
 import unittest
 
+from tools.check_vectors import check_vector
 from z80tm.compiler import build_cpu
-from z80tm.harness import CPU
 
-FIXTURE = Path(__file__).parent / "fixtures" / "singlestep.json"
-ARCH = ("a", "f", "b", "c", "d", "e", "h", "l", "pc", "sp", "ix", "iy",
-        "af_", "bc_", "de_", "hl_", "i", "r", "iff1", "iff2", "im")
+FIXTURES = Path(__file__).parent / "fixtures"
+COMMIT = "ebe1875d48f374bcfd4b505d8eb8ee751568b5f7"
 
 
 class IndependentFixtures(unittest.TestCase):
@@ -16,52 +15,42 @@ class IndependentFixtures(unittest.TestCase):
     def setUpClass(cls):
         cls.program = build_cpu()
 
-    def test_pinned_jsmoo_vectors(self):
-        data = json.loads(FIXTURE.read_text(encoding="utf-8"))
-        self.assertEqual(data["commit"], "ebe1875d48f374bcfd4b505d8eb8ee751568b5f7")
+    def check_fixture_file(self, filename, prefix=""):
+        data = json.loads((FIXTURES / filename).read_text(encoding="utf-8"))
+        self.assertEqual(data["commit"], COMMIT)
         for family in data["fixtures"]:
+            if not family["opcode"].startswith(prefix):
+                continue
             for vector in family["tests"]:
                 with self.subTest(vector=vector["name"]):
-                    initial, final = vector["initial"], vector["final"]
-                    registers = {name.upper(): initial[name] for name in ARCH}
-                    ports = [(direction, address, value) for address, value, direction in vector.get("ports", [])]
-                    cpu = CPU(registers=registers, ram=dict(initial["ram"]), program=self.program, ports=ports)
-                    instruction = cpu.step_instruction(trace_cycles=True)
-                    for name in ARCH:
-                        actual, expected = cpu.registers[name.upper()], final[name]
-                        if name == "pc" and family["opcode"] == "76":
-                            # Fixture core holds PC on HALT for repeated fetches;
-                            # this CPU exposes the resume PC required by milestone 1.
-                            expected = (initial["pc"] + 1) & 65535
-                        if name == "f" and family["opcode"] in ("37", "3f"):
-                            # Q-dependent undocumented X/Y behavior is not yet implemented.
-                            actual &= 0xD7
-                            expected &= 0xD7
-                        self.assertEqual(actual, expected, name)
-                    for address, value in final["ram"]:
-                        self.assertEqual(cpu.read_memory(address), value, f"RAM {address:04X}")
-                    self.assertEqual(instruction.tstates, len(vector["cycles"]))
-                    self.assertEqual(sum(c.tstates for c in instruction.cycles), instruction.tstates)
-                    self.assertEqual([(e.address, e.data, e.direction) for e in cpu.port_events],
-                                     [tuple(port) for port in vector.get("ports", [])])
-                    expected_bus = []
-                    for tick, (address, value, pins) in enumerate(vector["cycles"]):
-                        if pins not in ("r-m-", "-wm-", "r--i", "-w-i"):
-                            continue
-                        kind = {"r-m-": "read", "-wm-": "write", "r--i": "io_read", "-w-i": "io_write"}[pins]
-                        if not expected_bus:
-                            kind = "m1"
-                        if pins.startswith("r"):
-                            value = vector["cycles"][tick + 1][1]
-                        start = tick - (2 if kind.startswith("io_") else 1)
-                        expected_bus.append((kind, address, value, start))
-                    self.assertEqual([(c.kind, c.address, c.data, c.start) for c in instruction.cycles if c.kind != "internal"],
-                                     expected_bus)
+                    self.assertEqual(check_vector(self.program, family, vector), {})
 
-    def test_every_unprefixed_opcode_has_independent_vectors(self):
-        data = json.loads(FIXTURE.read_text(encoding="utf-8"))
-        self.assertEqual({int(f["opcode"], 16) for f in data["fixtures"]}, set(self.program.coverage))
-        self.assertEqual(sum(len(f["tests"]) for f in data["fixtures"]), 520)
+    def test_pinned_unprefixed_vectors(self):
+        self.check_fixture_file("singlestep.json")
+
+    def test_pinned_cb_vectors(self):
+        self.check_fixture_file("prefixes.json", "cb ")
+
+    def test_pinned_ed_vectors(self):
+        self.check_fixture_file("prefixes.json", "ed ")
+
+    def test_pinned_dd_vectors(self):
+        self.check_fixture_file("prefixes.json", "dd ")
+
+    def test_pinned_fd_vectors(self):
+        self.check_fixture_file("prefixes.json", "fd ")
+
+    def test_fixture_encoding_coverage(self):
+        base = json.loads((FIXTURES / "singlestep.json").read_text(encoding="utf-8"))["fixtures"]
+        prefixes = json.loads((FIXTURES / "prefixes.json").read_text(encoding="utf-8"))["fixtures"]
+        self.assertEqual({int(f["opcode"], 16) for f in base}, set(self.program.coverage))
+        self.assertEqual(sum(len(f["tests"]) for f in base), 520)
+        self.assertEqual(len(prefixes), 1352)
+        self.assertEqual(sum(len(f["tests"]) for f in prefixes), 1352)
+        # Assert the pinned selection is complete, independently of the decoder.
+        index = json.loads((FIXTURES.parents[1] / "tools" / "fixture-index.json").read_text(encoding="utf-8"))
+        expected = {path[3:-5]: blob for path, blob in index.items() if " " in path}
+        self.assertEqual({f["opcode"]: f["blob"] for f in prefixes}, expected)
 
 
 if __name__ == "__main__":

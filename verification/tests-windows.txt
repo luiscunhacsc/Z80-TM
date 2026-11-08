@@ -1,30 +1,45 @@
-test_bad_opcode_exit (tests.test_cli.CLITests.test_bad_opcode_exit) ... ok
- 
+Batch 1
 test_budget_exit_and_instruction_stepping (tests.test_cli.CLITests.test_budget_exit_and_instruction_stepping) ... ok
+test_continue_halt_stops_on_action_limit (tests.test_cli.CLITests.test_continue_halt_stops_on_action_limit) ... ok
+test_coverage_includes_prefix_families (tests.test_cli.CLITests.test_coverage_includes_prefix_families) ... ok
+test_im0_response_file_and_exhaustion (tests.test_cli.CLITests.test_im0_response_file_and_exhaustion) ... ok
+test_invalid_action_limit_is_usage_error (tests.test_cli.CLITests.test_invalid_action_limit_is_usage_error) ... ok
 test_raw_binary_load_address_and_peek (tests.test_cli.CLITests.test_raw_binary_load_address_and_peek) ... ok
+test_scripted_interrupt_recovers_from_halt (tests.test_cli.CLITests.test_scripted_interrupt_recovers_from_halt) ... ok
+test_undefined_ed_is_nmos_nop (tests.test_cli.CLITests.test_undefined_ed_is_nmos_nop) ... ok
 test_add_hl_flags_and_alias (tests.test_extended.ExtendedTests.test_add_hl_flags_and_alias) ... ok
-test_all_conditions_taken_and_not_taken (tests.test_extended.ExtendedTests.test_all_conditions_taken_and_not_taken) 
-... ok
+test_all_conditions_taken_and_not_taken (tests.test_extended.ExtendedTests.test_all_conditions_taken_and_not_taken) ... ok
 test_all_unprefixed_opcodes_declared (tests.test_extended.ExtendedTests.test_all_unprefixed_opcodes_declared) ... ok
 test_alu_explicit_edges (tests.test_extended.ExtendedTests.test_alu_explicit_edges) ... ok
 test_ei_delay_and_di (tests.test_extended.ExtendedTests.test_ei_delay_and_di) ... ok
-test_exchange_main_alternate_and_stack (tests.test_extended.ExtendedTests.test_exchange_main_alternate_and_stack) ... 
-ok
+test_exchange_main_alternate_and_stack (tests.test_extended.ExtendedTests.test_exchange_main_alternate_and_stack) ... ok
+test_ignored_index_prefix_clears_scf_ccf_flag_history (tests.test_extended.ExtendedTests.test_ignored_index_prefix_clears_scf_ccf_flag_history) ... ok
 test_inc_dec_memory_and_pair_flags (tests.test_extended.ExtendedTests.test_inc_dec_memory_and_pair_flags) ... ok
 test_load_word_wrap_and_little_endian (tests.test_extended.ExtendedTests.test_load_word_wrap_and_little_endian) ... ok
-test_port_script_errors_are_transition_errors 
-(tests.test_extended.ExtendedTests.test_port_script_errors_are_transition_errors) ... ok
+test_port_script_errors_are_transition_errors (tests.test_extended.ExtendedTests.test_port_script_errors_are_transition_errors) ... ok
+test_prefix_flag_history_after_alu_instruction (tests.test_extended.ExtendedTests.test_prefix_flag_history_after_alu_instruction) ... ok
 test_resume_after_transition_budget (tests.test_extended.ExtendedTests.test_resume_after_transition_budget) ... ok
-test_scripted_ports_full_address_and_flags 
-(tests.test_extended.ExtendedTests.test_scripted_ports_full_address_and_flags) ... ok
+test_scripted_ports_full_address_and_flags (tests.test_extended.ExtendedTests.test_scripted_ports_full_address_and_flags) ... ok
 test_stack_call_return_wrap (tests.test_extended.ExtendedTests.test_stack_call_return_wrap) ... ok
-test_every_unprefixed_opcode_has_independent_vectors 
-(tests.test_fixtures.IndependentFixtures.test_every_unprefixed_opcode_has_independent_vectors) ... ok
-test_pinned_jsmoo_vectors (tests.test_fixtures.IndependentFixtures.test_pinned_jsmoo_vectors) ... ok
-test_identity_rule_expansion_and_zero_budget 
-(tests.test_machine.MachineTests.test_identity_rule_expansion_and_zero_budget) ... ok
-test_literal_single_cell_transitions_and_blank_left 
-(tests.test_machine.MachineTests.test_literal_single_cell_transitions_and_blank_left) ... ok
+test_fixture_encoding_coverage (tests.test_fixtures.IndependentFixtures.test_fixture_encoding_coverage) ... ok
+test_pinned_cb_vectors (tests.test_fixtures.IndependentFixtures.test_pinned_cb_vectors) ... ok
+test_pinned_ed_vectors (tests.test_fixtures.IndependentFixtures.test_pinned_ed_vectors) ... ok
+test_pinned_unprefixed_vectors (tests.test_fixtures.IndependentFixtures.test_pinned_unprefixed_vectors) ... ok
+test_clock_carry_and_absolute_script_time (tests.test_interrupts.InterruptTests.test_clock_carry_and_absolute_script_time) ... ok
+test_ei_defers_int_one_complete_prefixed_instruction (tests.test_interrupts.InterruptTests.test_ei_defers_int_one_complete_prefixed_instruction) ... ok
+test_halt_waits_then_recovers_to_resume_pc (tests.test_interrupts.InterruptTests.test_halt_waits_then_recovers_to_resume_pc) ... ok
+test_im0_prefix_stream_refresh_and_no_pc_advance (tests.test_interrupts.InterruptTests.test_im0_prefix_stream_refresh_and_no_pc_advance) ... ok
+test_im0_rst_and_multibyte_call (tests.test_interrupts.InterruptTests.test_im0_rst_and_multibyte_call) ... ok
+test_im2_odd_vector_wraps_and_push_precedes_vector_read (tests.test_interrupts.InterruptTests.test_im2_odd_vector_wraps_and_push_precedes_vector_read) ... ok
+test_interrupt_and_halt_resume_after_transition_budget (tests.test_interrupts.InterruptTests.test_interrupt_and_halt_resume_after_transition_budget) ... ok
+test_irq_level_clear_before_boundary_is_not_accepted (tests.test_interrupts.InterruptTests.test_irq_level_clear_before_boundary_is_not_accepted) ... ok
+test_ld_a_i_nmos_pv_interrupt_quirk (tests.test_interrupts.InterruptTests.test_ld_a_i_nmos_pv_interrupt_quirk) ... ok
+test_negative_action_limit_rejected (tests.test_interrupts.InterruptTests.test_negative_action_limit_rejected) ... ok
+test_nested_nmi_requires_an_intervening_instruction (tests.test_interrupts.InterruptTests.test_nested_nmi_requires_an_intervening_instruction) ... ok
+test_nmi_priority_iff2_and_retn (tests.test_interrupts.InterruptTests.test_nmi_priority_iff2_and_retn) ... ok
+test_reti_notification_and_refresh_trace (tests.test_interrupts.InterruptTests.test_reti_notification_and_refresh_trace) ... ok
+test_identity_rule_expansion_and_zero_budget (tests.test_machine.MachineTests.test_identity_rule_expansion_and_zero_budget) ... ok
+test_literal_single_cell_transitions_and_blank_left (tests.test_machine.MachineTests.test_literal_single_cell_transitions_and_blank_left) ... ok
 test_table_is_immutable_and_validated (tests.test_machine.MachineTests.test_table_is_immutable_and_validated) ... ok
 test_diagonal (tests.test_milestone.MilestoneTests.test_diagonal) ... ok
 test_djnz (tests.test_milestone.MilestoneTests.test_djnz) ... ok
@@ -34,14 +49,30 @@ test_machine_cycle_trace (tests.test_milestone.MilestoneTests.test_machine_cycle
 test_raw_machine_without_harness (tests.test_milestone.MilestoneTests.test_raw_machine_without_harness) ... ok
 test_refresh_low_seven_bits (tests.test_milestone.MilestoneTests.test_refresh_low_seven_bits) ... ok
 test_rrca_flags (tests.test_milestone.MilestoneTests.test_rrca_flags) ... ok
-test_same_table_relocated_across_page (tests.test_milestone.MilestoneTests.test_same_table_relocated_across_page) ... 
-ok
+test_same_table_relocated_across_page (tests.test_milestone.MilestoneTests.test_same_table_relocated_across_page) ... ok
 test_self_modifying_opcode (tests.test_milestone.MilestoneTests.test_self_modifying_opcode) ... ok
-test_unsupported_halt_and_budget_are_distinct 
-(tests.test_milestone.MilestoneTests.test_unsupported_halt_and_budget_are_distinct) ... ok
+test_unsupported_halt_and_budget_are_distinct (tests.test_milestone.MilestoneTests.test_unsupported_halt_and_budget_are_distinct) ... ok
 test_write_first_and_last_bytes (tests.test_milestone.MilestoneTests.test_write_first_and_last_bytes) ... ok
 
 ----------------------------------------------------------------------
-Ran 32 tests in 116.331s
+Ran 54 tests in 481.915s
 
 OK
+
+Batch 2
+test_pinned_dd_vectors (tests.test_fixtures.IndependentFixtures.test_pinned_dd_vectors) ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 513.042s
+
+OK
+
+Batch 3
+test_pinned_fd_vectors (tests.test_fixtures.IndependentFixtures.test_pinned_fd_vectors) ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 517.711s
+
+OK
+
+TOTAL 56 tests; 0 failures; 0 errors; 0 skipped; 523.982s wall time across 3 batches

@@ -30,6 +30,11 @@ def check_vector(program, family, vector, check_wz=True):
             errors[f"ram:{address:04x}"] = [cpu.read_memory(address), value]
     if ins.tstates != len(vector["cycles"]):
         errors["timing"] = [ins.tstates, len(vector["cycles"])]
+    cycle_time = sum(event.tstates for event in ins.cycles)
+    if cycle_time != ins.tstates:
+        errors["cycle_timing"] = [cycle_time, ins.tstates]
+    if actual["CLOCK"] != ins.tstates:
+        errors["clock"] = [actual["CLOCK"], ins.tstates]
     expected_bus = []
     for tick, (address, value, pins) in enumerate(vector["cycles"]):
         if pins not in ("r-m-", "-wm-", "r--i", "-w-i"):

@@ -107,6 +107,28 @@ class ExtendedTests(unittest.TestCase):
         cpu.step_instruction()
         self.assertEqual(tuple(cpu.registers[x] for x in ("IFF1", "IFF2", "EI_DELAY")), (0, 0, 0))
 
+    def test_ignored_index_prefix_clears_scf_ccf_flag_history(self):
+        # NMOS DD/FD lose the preceding instruction's flag-writing history.
+        # Keep A clear so both undocumented bits expose the Q difference.
+        for prefixes in ("", "DD", "FD", "DD FD", "FD DD DD"):
+            for opcode, plain, prefixed in (("37", 0x01, 0x29), ("3F", 0x10, 0x38)):
+                with self.subTest(prefixes=prefixes, opcode=opcode):
+                    code = bytes.fromhex(f"{prefixes} {opcode}")
+                    cpu = CPU(code, registers={"A": 0, "F": 0x29, "Q": 0x29, "R": 0xFE}, program=self.program)
+                    ins = cpu.step_instruction()
+                    flags = prefixed if prefixes else plain
+                    self.assertEqual((cpu.registers["F"], cpu.registers["Q"]), (flags, flags))
+                    self.assertEqual((cpu.registers["PC"], ins.tstates, cpu.instructions), (len(code), 4 * len(code), 1))
+                    self.assertEqual(cpu.registers["R"], 0x80 | ((0x7E + len(code)) & 0x7F))
+
+    def test_prefix_flag_history_after_alu_instruction(self):
+        for prefix in ("", "DD", "FD"):
+            cpu = self.cpu(f"B8 {prefix} 37", registers={"B": 0x28})
+            cpu.step_instruction()
+            self.assertEqual(cpu.registers["Q"], 0xBB)
+            cpu.step_instruction()
+            self.assertEqual(cpu.registers["F"], 0xA9 if prefix else 0x81)
+
     def test_scripted_ports_full_address_and_flags(self):
         cpu = self.cpu("DB FE D3 7F 76", registers={"A": 0xAB, "F": 0xD7},
                        ports=[("r", 0xABFE, 0x52), ("w", 0x527F, 0x52)])
