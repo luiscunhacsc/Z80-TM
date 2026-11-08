@@ -4,8 +4,32 @@ Python 3.11+, standard library only. The generated rule table implements all
 **252 non-prefix opcodes**, CB/ED/DD/FD and indexed CB decoding, scripted 16-bit
 port I/O, interrupts in modes 0–2, and HALT recovery. A 64-bit clock lives on
 the tape and advances through transition rules. This is an incrementally
-verified NMOS Z80 CPU, with selected undocumented behavior; it is not a
-pin-level or Spectrum emulator. See [coverage and limitations](docs/COVERAGE.md).
+verified NMOS Z80 CPU, with selected undocumented behavior. A Spectrum 48K
+board now adds the ROM, keyboard, display and cassette input, still using only
+literal single-tape transitions. See [Spectrum usage](docs/SPECTRUM.md) and
+[coverage and limitations](docs/COVERAGE.md).
+
+## Spectrum 48K
+
+With the supplied `z80tm/48.rom`, double-click `Start-Spectrum.cmd` on this
+Windows workspace, or run `python -m z80tm spectrum` with a Tk-enabled Python.
+The first run builds the board's finite transition table. Cold boot and input
+are **much slower than real time**. The compiled option executes each TM rule
+individually; there is no conventional Z80 core, ROM bypass or instant loading.
+
+The window provides a Spectrum keyboard, a BASIC source queue, TAP/TZX mounting,
+tape transport and exact-state save/resume. Wait for the ROM editor before
+typing. To load a cassette, mount it, queue `LOAD ""`, then press Play.
+Closing the window saves `.tools/spectrum/session.json`. The Windows launcher
+automatically resumes that file, or the verified boot checkpoint when available.
+To resume explicitly:
+
+```console
+python -m z80tm spectrum --resume .tools/spectrum/session.json
+```
+
+See [the detailed guide](docs/SPECTRUM.md) for keyboard behavior, dependencies,
+supported tape blocks, verification and hardware limitations.
 
 ## Run
 
@@ -135,7 +159,9 @@ cpu.run(budget=20_000_000)
 tape as execution inputs. It reads `tape[head]`, looks up one rule, writes that
 cell, moves the head, and changes state. Its two counters only observe the
 transition and movement. It imports no CPU, opcode, addressing or ALU module.
-There are no guest-address shortcuts, scan batching, JIT paths or native cores.
+There are no guest-address shortcuts, scan batching or native Z80 cores.
+The optional `tm_runner.cs` implements the same generic one-cell loop in C#;
+its exact tape, head, state and counters are compared with the Python runner.
 
 The harness initializes/inspects the tape, detects generated boundary/error
 states, applies budgets, and collects traces. It never writes guest state
@@ -166,7 +192,8 @@ actually run, benchmark measurements and fixture comparison exclusions.
 
 Further work is to broaden independent vectors and exercisers, verify interrupt
 edge timing against an independent oracle, and refine pin-level bus detail.
-The Spectrum board and peripherals are outside this phase.
+The Spectrum board has its own hardware rules and acceptance checks described
+in [the Spectrum guide](docs/SPECTRUM.md).
 
 References: [Zilog UM008011-0816, mirrored manual](https://zany80.github.io/documentation/Z80/UserManual.html),
 [pinned JSMoo fixtures](https://github.com/SingleStepTests/z80/tree/ebe1875d48f374bcfd4b505d8eb8ee751568b5f7),

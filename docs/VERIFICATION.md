@@ -118,8 +118,9 @@ throughput measurement.
 
 These are one observed run, not stable throughput guarantees. Process startup,
 shutdown, tape initialization, boundary snapshot formatting and terminal output
-are outside the accumulated transition-loop time. `Machine.step` remains the
-only execution path, with no accelerated runner. The rule table is shared and
+are outside the accumulated transition-loop time. This measurement predates
+the Spectrum tape slots and the optional compiled literal TM loop; its counts
+describe that earlier tape layout. The rule table is shared and
 cached within each process. Both demo artifacts reuse the completed batch's
 table, so their reported table-build times are cache lookups.
 

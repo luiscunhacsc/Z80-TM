@@ -1,8 +1,9 @@
 # Coverage and continuation plan
 
 Target: **Zilog NMOS Z80**. This is a CPU implemented by generated single-tape
-Turing-machine rules, with selected independent verification. It is not a
-Spectrum emulator or a claim of exhaustive hardware conformance.
+Turing-machine rules, with selected independent verification. The optional
+[Spectrum 48K board](SPECTRUM.md) uses the same instruction generator. Neither
+the CPU nor the board claims exhaustive hardware conformance.
 
 | Family | Implemented | Verification |
 | --- | --- | --- |
@@ -13,7 +14,7 @@ Spectrum emulator or a claim of exhaustive hardware conformance.
 | DDCB/FDCB | All 256 final bytes per family, including register copies and BIT aliases | 512 independent vectors |
 | Interrupts | Tape scripts, NMI, level-sensitive INT, IM0 response streams, IM1/IM2, EI inhibition, RETI/RETN, HALT recovery | Explicit scenarios for priority, stack/vector wrap, deferred acceptance, refresh, response exhaustion and budget resumption |
 | Clock | 64-bit tape clock and per-action elapsed time, advanced by generated rules | Per-fixture timing checks; carry across 32 bits; absolute script deadlines; interrupted-run equivalence |
-| Board/peripherals | Scripted ports only | Spectrum contention, video, sound and other peripherals are outside this phase |
+| Board/peripherals | CPU scripted ports; optional Spectrum 48K ROM protection, ULA ports, keyboard, frame IRQ, display and cassette input | Dedicated hardware, pulse-edge, renderer and exact-runner equivalence tests; no contention, floating bus or audio output |
 
 `python -m z80tm coverage` lists unprefixed entries and family counts.
 `--family CB` (or ED/DD/FD/DDCB/FDCB) lists a single family; `--json` emits
@@ -78,7 +79,7 @@ ALU instruction.
 2. Validate interrupt timing and undocumented edge behavior against an
    independent oracle; retain explicit differences and exclusions.
 3. Refine internal bus addresses and refresh/WAIT/BUSRQ pin behavior before
-   adding Spectrum contention or other board components.
+   adding Spectrum contention and more detailed board timing.
 4. Run the same strict runner on Linux and record reproducible measurements.
 
 No redcode core, zexdoc/zexall, hardware oracle or Linux run is recorded yet.

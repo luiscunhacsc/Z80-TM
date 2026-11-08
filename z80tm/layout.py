@@ -16,6 +16,12 @@ SLOTS = (
     "BUSL", "BUSH",
     "HAS_SCRIPT", "NEXT_KIND", "NEXT_VECTOR", *(f"DUE{i}" for i in range(8)),
     *(f"CLOCK{i}" for i in range(8)), *(f"TIME{i}" for i in range(8)),
+    # Spectrum peripherals are tape state too. Host input is confined to the
+    # KEY_IN*/KEY_REQUEST and cassette input/control mailboxes.
+    "ULA_FRAME0", "ULA_FRAME1", "ULA_FRAME2", "ULA_FRAMES", "ULA_OUT", "EAR",
+    "KEY_HOLD", "KEY_REQUEST", *(f"KEY{i}" for i in range(8)), *(f"KEY_IN{i}" for i in range(8)),
+    "TAPE_CONTROL", "TAPE_STOP", "PULSE_LEFT", *(f"PULSE{i}" for i in range(4)),
+    *(f"PULSE_IN{i}" for i in range(4)), "PULSE_LEVEL", "PULSE_END",
 )
 MARK = {name: 274 + n for n, name in enumerate(SLOTS)}
 POS = {name: 2 + 2 * n for n, name in enumerate(SLOTS)}

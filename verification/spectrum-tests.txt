@@ -1,0 +1,49 @@
+test_control_flow_metadata_stop_and_level (tests.test_tape.TapeTests.test_control_flow_metadata_stop_and_level) ... ok
+test_csw_compressed_uncompressed_and_last_level (tests.test_tape.TapeTests.test_csw_compressed_uncompressed_and_last_level) ... ok
+test_generalized_symbols_and_polarity (tests.test_tape.TapeTests.test_generalized_symbols_and_polarity) ... ok
+test_malformed_files_fail_clearly (tests.test_tape.TapeTests.test_malformed_files_fail_clearly) ... ok
+test_tap_and_tzx_standard_waveforms_match (tests.test_tape.TapeTests.test_tap_and_tzx_standard_waveforms_match) ... ok
+test_turbo_pure_data_partial_byte_and_direct (tests.test_tape.TapeTests.test_turbo_pure_data_partial_byte_and_direct) ... ok
+test_checkpoint_resumes_half_instruction_and_external_input (tests.test_spectrum.SpectrumBoardTests.test_checkpoint_resumes_half_instruction_and_external_input) ... ok
+test_frame_irq_and_keyboard_latch (tests.test_spectrum.SpectrumBoardTests.test_frame_irq_and_keyboard_latch) ... ok
+test_host_mailbox_cannot_write_guest_state (tests.test_spectrum.SpectrumBoardTests.test_host_mailbox_cannot_write_guest_state) ... ok
+test_rom_protection_ram_and_even_port_decode (tests.test_spectrum.SpectrumBoardTests.test_rom_protection_ram_and_even_port_decode) ... ok
+test_selected_keyboard_rows_are_anded (tests.test_spectrum.SpectrumBoardTests.test_selected_keyboard_rows_are_anded) ... ok
+test_tape_edges_exact_cycle_boundary_stop_and_rewind (tests.test_spectrum.SpectrumBoardTests.test_tape_edges_exact_cycle_boundary_stop_and_rewind) ... ok
+test_keyboard_chords_and_basic_source (tests.test_spectrum.SpectrumDisplayTests.test_keyboard_chords_and_basic_source) ... ok
+test_nonlinear_bitmap_bright_flash_and_attributes (tests.test_spectrum.SpectrumDisplayTests.test_nonlinear_bitmap_bright_flash_and_attributes) ... ok
+test_literal_equivalence_sparse_dense_and_leftward_growth (tests.test_compiled_machine.CompiledMachineTests.test_literal_equivalence_sparse_dense_and_leftward_growth) ... ok
+test_partial_transitions_peripherals_and_memory_match_python (tests.test_spectrum_equivalence.SpectrumEquivalenceTests.test_partial_transitions_peripherals_and_memory_match_python) ... ok
+
+----------------------------------------------------------------------
+Ran 16 tests in 213.584s
+
+OK
+test_frame_releases_a_queued_key (tests.test_spectrum.SpectrumBoardTests.test_frame_releases_a_queued_key) ... ok
+test_checkpoint_resumes_half_instruction_and_external_input (tests.test_spectrum.SpectrumBoardTests.test_checkpoint_resumes_half_instruction_and_external_input) ... ok
+test_paused_cassette_preserves_remaining_pulse (tests.test_spectrum.SpectrumBoardTests.test_paused_cassette_preserves_remaining_pulse) ... ok
+
+----------------------------------------------------------------------
+Ran 3 tests in 12.280s
+
+OK
+test_rewind_during_input_request_keeps_the_first_new_pulse (tests.test_spectrum.SpectrumBoardTests.test_rewind_during_input_request_keeps_the_first_new_pulse) ... ok
+test_tape_edges_exact_cycle_boundary_stop_and_rewind (tests.test_spectrum.SpectrumBoardTests.test_tape_edges_exact_cycle_boundary_stop_and_rewind) ... ok
+test_checkpoint_resumes_half_instruction_and_external_input (tests.test_spectrum.SpectrumBoardTests.test_checkpoint_resumes_half_instruction_and_external_input) ... ok
+
+----------------------------------------------------------------------
+Ran 3 tests in 12.461s
+
+OK
+test_control_flow_metadata_stop_and_level (tests.test_tape.TapeTests.test_control_flow_metadata_stop_and_level) ... ok
+test_csw_compressed_uncompressed_and_last_level (tests.test_tape.TapeTests.test_csw_compressed_uncompressed_and_last_level) ... ok
+test_generalized_empty_symbol_expansion_is_bounded (tests.test_tape.TapeTests.test_generalized_empty_symbol_expansion_is_bounded) ... ok
+test_generalized_symbols_and_polarity (tests.test_tape.TapeTests.test_generalized_symbols_and_polarity) ... ok
+test_malformed_files_fail_clearly (tests.test_tape.TapeTests.test_malformed_files_fail_clearly) ... ok
+test_tap_and_tzx_standard_waveforms_match (tests.test_tape.TapeTests.test_tap_and_tzx_standard_waveforms_match) ... ok
+test_turbo_pure_data_partial_byte_and_direct (tests.test_tape.TapeTests.test_turbo_pure_data_partial_byte_and_direct) ... ok
+
+----------------------------------------------------------------------
+Ran 7 tests in 0.029s
+
+OK

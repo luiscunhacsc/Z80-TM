@@ -1,0 +1,1 @@
+basic-enter: PC=15FE guest=1.695s TM=105,015,771,974 keys=5 pulses=0 wall=2.7s

@@ -1,0 +1,10 @@
+Windows GUI smoke checks, 2026-11-08.
+Host: installed CPython 3.10.7 with Tk 8.6.12; compiled literal TM backend.
+Tk windows were withdrawn during these checks.
+
+PASS: worker startup, ROM execution, PPM screen rendering and exact-state save on close.
+PASS: restore that exact state, render, report Play without media as a recoverable error, and autosave.
+PASS: missing ROM produces an error and a nonzero GUI result.
+PASS: adaptive display size requests a 778 x 525 window on the 1280 x 720 display.
+
+The CPU reference suite uses the separate portable CPython 3.12.10 interpreter.

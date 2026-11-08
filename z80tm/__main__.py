@@ -16,8 +16,12 @@ def number(value):
 
 
 def main(argv=None):
+    argv = sys.argv[1:] if argv is None else list(argv)
+    if argv and argv[0] == 'spectrum':
+        from .spectrum_ui import main as spectrum_main
+        return spectrum_main(argv[1:])
     parser = argparse.ArgumentParser(description="Strict single-tape Z80 Turing machine (Python 3.11+)")
-    parser.add_argument("command", choices=("demo", "run", "coverage"))
+    parser.add_argument("command", choices=("demo", "run", "coverage", "spectrum"))
     parser.add_argument("binary", nargs="?", type=Path)
     parser.add_argument("--load", type=number, default=0, help="Raw binary load address (e.g. 0x20ff)")
     parser.add_argument("--pc", type=number, help="Initial PC; defaults to load address")
