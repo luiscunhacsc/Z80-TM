@@ -1,1 +1,2 @@
 tap-command: PC=15FE guest=1.695s TM=105,015,771,974 keys=4 pulses=0 wall=2.8s
+tap-command: PC=10FE guest=1.719s TM=107,015,771,974 keys=3 pulses=0 wall=65.2s
